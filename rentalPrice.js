@@ -1,20 +1,33 @@
+function price(pickupDate, dropoffDate, type, age, licenseYears) {
 
-function price(pickup, dropoff, pickupDate, dropoffDate, type, age) {
-  const clazz = getClazz(type);
+  const vehicleClass = getClass(type);
   const days = get_days(pickupDate, dropoffDate);
-  const season = getSeason(pickupDate, dropoffDate);
+  const season = getSeason(pickupDate);
 
   if (age < 18) {
       return "Driver too young - cannot quote the price";
   }
 
-  if (age <= 21 && clazz !== "Compact") {
+  if (age <= 21 && vehicleClass !== "Compact") {
       return "Drivers 21 y/o or less can only rent Compact vehicles";
   }
 
+  if (licenseYears < 1) {
+    return "Driver must have a license for at least 1 year";
+  }
+  
   let rentalprice = age * days;
 
-  if (clazz === "Racer" && age <= 25 && season === "High") {
+  if (licenseYears < 2 && licenseYears >= 1 ) {
+    rentalprice *= 1.3;
+  }
+
+  if (licenseYears < 3 && licenseYears >= 1 && season === "High") {
+    rentalprice *= 1.3 + 15;
+  }
+
+
+  if (type === "Racer" && age <= 25 && season === "High") {
       rentalprice *= 1.5;
   }
 
@@ -28,7 +41,7 @@ function price(pickup, dropoff, pickupDate, dropoffDate, type, age) {
   return '$' + rentalprice;
 }
 
-function getClazz(type) {
+function getClass(type) {
   switch (type) {
       case "Compact":
           return "Compact";
