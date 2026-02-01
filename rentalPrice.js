@@ -1,9 +1,3 @@
-function price(pickupDate, dropoffDate, type, age, licenseYears) {
-
-  const vehicleClass = type || "Unknown";
-  const days = getDays(pickupDate, dropoffDate);
-  const season = getSeason(pickupDate);
-
 const SEASON = {
   HIGH: "High",
   LOW: "Low",
@@ -32,11 +26,21 @@ function validateDriver(age , licenseYears, vehicleClass){
 
   return null;
 }
+
+function price(pickupDate, dropoffDate, type, age, licenseYears) {
+  const vehicleClass = type || VEHICLE_CLASS.UNKNOWN;
+  const days = getDays(pickupDate, dropoffDate);
+  const season = getSeason(pickupDate, dropoffDate);
+
+
+  const validationError = validateDriver(age, licenseYears, vehicleClass);
+  if (validationError) {
+    return validationError;
+  }
   
   let rentalPrice = age * days;
 
   const hasShortLicense = licenseYears >= 1 && licenseYears < 2;
-
   if (hasShortLicense) {
     rentalPrice *= 1.3;
   }
@@ -46,7 +50,7 @@ function validateDriver(age , licenseYears, vehicleClass){
   }
 
 
-  if (type === VEHICLE_CLASS.RACER && age <= 25 && season === SEASON.HIGH) {
+  if (vehicleClass === VEHICLE_CLASS.RACER && age <= 25 && season === SEASON.HIGH) {
       rentalPrice *= 1.5;
   }
 
@@ -63,10 +67,10 @@ function validateDriver(age , licenseYears, vehicleClass){
 
 function getDays(pickupDate, dropoffDate) {
   const oneDay = 24 * 60 * 60 * 1000; // hours*minutes*seconds*milliseconds
-  const firstDate = new Date(pickupDate);
-  const secondDate = new Date(dropoffDate);
+  const startDate = new Date(pickupDate);
+  const endDate = new Date(dropoffDate);
 
-  return Math.round(Math.abs((firstDate - secondDate) / oneDay)) + 1;
+  return Math.round(Math.abs((startDate - endDate) / oneDay)) + 1;
 }
 
 function getSeason(pickupDate, dropoffDate) {
@@ -84,9 +88,9 @@ function getSeason(pickupDate, dropoffDate) {
       (dropoffMonth >= start && dropoffMonth <= end) ||
       (pickupMonth < start && dropoffMonth > end)
   ) {
-      return "High";
+      return SEASON.HIGH;
   } else {
-      return "Low";
+      return SEASON.LOW;
   }
 }
 
