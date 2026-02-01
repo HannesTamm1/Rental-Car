@@ -17,18 +17,21 @@ const VEHICLE_CLASS = {
   UNKNOWN: "Unknown",
 };
 
-
+function validateDriver(age , licenseYears, vehicleClass){
   if (age < 18) {
-      return "Driver too young - cannot quote the price";
+    return "Driver too young - cannot quote the price";
   }
 
-  if (age <= 21 && vehicleClass !== "Compact") {
+  if (age <= 21 && vehicleClass !== VEHICLE_CLASS.COMPACT) {
       return "Drivers 21 y/o or less can only rent Compact vehicles";
   }
 
   if (licenseYears < 1) {
     return "Driver must have a license for at least 1 year";
   }
+
+  return null;
+}
   
   let rentalPrice = age * days;
 
