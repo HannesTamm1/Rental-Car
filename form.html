@@ -76,7 +76,7 @@
 <body>
     <div class="formContainer">
         <h1>Car Rental Booking Form</h1>
-        <form id="calcForm" method="post" action="http://localhost:3000">
+        <form id="calcForm" method="post" action="/">
             <label for="pickup-location">Pickup Location:</label>
             <input type="text" id="pickup-location" name="pickup" required>
     
@@ -99,12 +99,12 @@
 
             <div class="form-group">
                 <label for="age">Diver's age</label>
-                <input type="number" class="form-control" name="age" required/>
+                <input type="number" class="form-control" name="age" min="18" step="1" required/>
             </div>
 
             <div class="form-group">
                 <label for="license-years">Years with driver's license</label>
-                <input type="number" class="form-control" id="license-years" name="licenseYears" min="0" step="1" required />
+                <input type="number" class="form-control" id="license-years" name="licenseYears" min="1" step="0.1" required />
             </div>
 
             <button type="submit" class="btn btn-primary">Search</button>

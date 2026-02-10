@@ -132,12 +132,17 @@ function price(pickupDate, dropoffDate, vehicleType, age, licenseYears) {
     total *= 1.15; // +15%
   }
 
-  if (vehicleClass === VEHICLE_CLASS.RACER && age <= RACER_YOUNG_MAX && season === SEASON.HIGH) {
+  if (vehicleClass === VEHICLE_CLASS.RACER && driverAge <= RACER_YOUNG_MAX && season === SEASON.HIGH) {
     total *= 1.5; // +50% for young racer drivers in high season
   }
 
   if (days > LONG_RENTAL_THRESHOLD && season === SEASON.LOW) {
     total *= 0.9; // 10% discount for long rentals in low season
+  }
+
+  const minimumTotal = driverAge * days;
+  if (total < minimumTotal) {
+    total = minimumTotal; // enforce minimum per-day price based on driver's age
   }
 
   return `$${total.toFixed(2)}`;
